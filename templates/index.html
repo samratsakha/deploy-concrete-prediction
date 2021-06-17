@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="icon" type="image/png"
+        href="https://almanaratain.com/wp-content/uploads/2017/12/8-RAK-HOLLOW-LINE-BLOCK.png" />
+    <title>Concrete Strength Prediction</title>
+
+    <style>
+        * {
+            margin: 0%;
+            padding: 0%;
+        }
+
+        body {
+            background: url("https://i.dlpng.com/static/png/6568834_preview.png") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            margin-bottom: 0;
+        }
+
+        header {
+            color: rgb(255, 255, 255);
+            background-color: rgba(0, 0, 0, 0.4);
+            font-size: xx-large;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            justify-items: center;
+            position: sticky;
+            top: 0;
+            height: 80px;
+            margin-bottom: 4%;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .left-container {
+            margin-left: 8%;
+            margin-bottom: 5%;
+        }
+
+        .right-container {
+            margin-left: 10%;
+            margin-right: 5%;
+            margin-top: 2%;
+            margin-bottom: 5%;
+        }
+
+        #modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(255, 255, 255, .8) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
+        }
+
+        #output{
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 500px) {
+            .main-content{
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header class="header">
+        <h2>Concrete Strength Prediction</h2><br>
+    </header>
+
+    <div class="main-content">
+
+        <div class="left-container">
+            <h3>Cement</h3>
+            <input id="cement" type="number" placeholder="Enter value here"><br><br>
+            <h3>Blast Furnace Slag</h3>
+            <input id="blast" type="number" placeholder="Enter value here"><br><br>
+            <h3>Water</h3>
+            <input id="water" type="number" placeholder="Enter value here"><br><br>
+            <h3>Superplasticizer</h3>
+            <input id="plasti" type="number" placeholder="Enter value here"><br><br>
+            <h3>Fine Aggregate</h3>
+            <input id="fine" type="number" placeholder="Enter value here"><br><br>
+            <h3>Age</h3>
+            <input id="age" type="number" placeholder="Enter value here"><br><br>
+            <h3 id="output" style="display: none;">Output here</h3><br>
+            <button id="btn" onclick="func()">Predict Strength</button>
+        </div>
+
+        <div class="right-container">
+            <h4>Cement (component 1) -- Input --  kg in a m3 mixture </h4><br>
+            <h4> Blast Furnace Slag (component 2) -- Input -- kg in a m3 mixture  </h4><br>
+            <h4> Water (component 3) -- Input --  kg in a m3 mixture  </h4><br>
+            <h4> Superplasticizer (component 4) -- Input --  kg in a m3 mixture </h4><br>
+            <h4> Fine Aggregate (component 5) -- Input -- kg in a m3 mixture  </h4><br>
+            <h4> Age -- Input in Day (1~365)  </h4><br>
+            <h4>Concrete compressive strength -- Output -- MPa </h4>
+        </div>
+
+    </div>
+
+
+
+    <div id="modal">
+        <!-- Place at bottom of page -->
+    </div>
+
+</body>
+<script type="text/javascript">
+
+    var array = [0,0,0,0,0,0];
+
+    function func() {
+
+
+        var cement = document.getElementById("cement").value;
+        var blast = document.getElementById("blast").value;
+        var water = document.getElementById("water").value;
+        var plasti = document.getElementById("plasti").value;
+        var fine = document.getElementById("fine").value;
+        var age = document.getElementById("age").value;
+
+        if(cement.trim()==""){
+            alert("Enter the value of Cement");
+            document.getElementById("cement").style.border = "solid 3px red";
+            return;
+        }
+        if(blast.trim()==""){
+            alert("Enter the value of Blast Furnace Slag");
+            document.getElementById("blast").style.border = "solid 3px red";
+            return;
+        }
+        if(water.trim()==""){
+            alert("Enter the value of Water");
+            document.getElementById("water").style.border = "solid 3px red";
+            return;
+        }
+        if(plasti.trim()==""){
+            alert("Enter the value of Superplasticizer");
+            document.getElementById("cement").style.border = "solid 3px red";
+            return;
+        }
+        if(fine.trim()==""){
+            alert("Enter the value of Fine Aggregate");
+            document.getElementById("fine").style.border = "solid 3px red";
+            return;
+        }
+        if(age.trim()==""){
+            alert("Enter the value of Age");
+            document.getElementById("age").style.border = "solid 3px red";
+            return;
+        }
+
+
+        array = [cement,blast,water,plasti,fine,age];
+        for(var i=0;i<array.length;i++){
+            array[i]=Number(array[i]);
+            if(isNaN(array[i])){
+                alert("Please enter number values in the inputs");
+                return;
+            }
+        }
+
+        if(array[5]<1 || array[5]>365){
+            alert("Age should be between 1-365 days");
+            document.getElementById("age").style.border = "solid 3px red";
+            return;
+        }
+
+        document.getElementById("modal").style.display = "block";
+        document.getElementById("cement").style.border = "none";
+        document.getElementById("blast").style.border = "none";
+        document.getElementById("water").style.border = "none";
+        document.getElementById("plasti").style.border = "none";
+        document.getElementById("fine").style.border = "none";
+        document.getElementById("age").style.border = "none";
+
+        var entry = {
+            val_array: array
+        };
+
+        fetch('/to_model', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify(entry),
+            cache: 'no-cache',
+            headers: new Headers({
+                'content-type': 'application/json'
+            })
+        })
+            .then(function (response) {
+                if (response.status !== 200) {
+                    document.getElementById("modal").style.display = "none";
+                    document.getElementById("output").innerHTML = "Error : Model did not Respond";
+                    document.getElementById("output").style.display = "block";
+                    console.log('Response status was not 200');
+                    return;
+                }
+
+                response.json().then(function (data) {
+                    document.getElementById("modal").style.display = "none";
+                    var display_out = JSON.stringify(data);
+                    var outs = JSON.parse(display_out);
+                    
+                    document.getElementById("output").innerHTML = "Strength - "+ outs.output + " Mpa";
+                    document.getElementById("output").style.display = "block";
+                    
+                })
+            })
+
+            
+
+    }
+
+</script>
+
+</html>
