@@ -36,8 +36,6 @@ def to_model():
 
     outs = round(output)
 
-    print(outs)
-
     x = {"output": outs}
     y = json.dumps(x)
 
